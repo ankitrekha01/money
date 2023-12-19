@@ -6,10 +6,11 @@ import {
   Option,
   Button,
 } from "@material-tailwind/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState,useContext } from "react";
 import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import UserContext from "../context/UserContext";
 
 const Register = () => {
   const navigate = useNavigate(); 
@@ -26,7 +27,7 @@ const Register = () => {
   });
 
   const domain = watch("domain");
-
+  const { setUser } = useContext(UserContext);
   // * Remove from FORM
   useEffect(() => {
     if (domain !== "others") {
@@ -37,6 +38,7 @@ const Register = () => {
   const onSubmit = async (data) => {
     try {
       const response = await axios.post("http://localhost:5001/register", data);
+      setUser({phone:response.data,isAuth:false});
       navigate("/login");
     } catch (error) {
       setExists(error.response.data.message);

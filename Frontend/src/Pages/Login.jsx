@@ -1,7 +1,13 @@
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { useForm, Controller } from "react-hook-form";
+import UserContext from "../context/UserContext";
+import { useContext, useState } from "react";
+import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 export default function SimpleRegistrationForm() {
+  const navigate = useNavigate(); 
+  const [exists, setExists] = useState("");
   const {
     control,
     handleSubmit,
@@ -9,8 +15,17 @@ export default function SimpleRegistrationForm() {
   } = useForm({
     mode: "onTouched",
   });
-
-  const onSubmit = (data) => console.log(data);
+  const { user,setUser } = useContext(UserContext);
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.post("http://localhost:5001/login", data);
+      setUser({phone:response.data.phone,isAuth:true});
+      navigate("/dashboard");
+    } catch (error) {
+      setExists(error);
+      console.error("Error during POST request:", error);
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -22,10 +37,13 @@ export default function SimpleRegistrationForm() {
         <Typography variant="h4" color="blue-gray">
           Login
         </Typography>
-        <form
-          className="mt-8 mb-2 w-full"
-          onSubmit={handleSubmit(onSubmit)}
-        >
+        {user.phone && (
+          <span className="text-green-500">
+            User is now registered, now you can login
+          </span>
+        )}
+        {exists && <span className="text-red-500">Wrong Credentials</span>}
+        <form className="mt-8 mb-2 w-full" onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-8">
             <Controller
               name="phone"
@@ -67,7 +85,7 @@ export default function SimpleRegistrationForm() {
               <span className="error-text">{errors?.password?.message}</span>
             )}
           </div>
-          <Button className="mt-6" fullWidth>
+          <Button type="submit" className="mt-6" fullWidth>
             Login
           </Button>
           <Typography color="gray" className="mt-4 text-center font-normal">

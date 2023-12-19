@@ -69,6 +69,7 @@ const registerUser = asyncHandler(async (req, res) => {
 //@access public
 const loginUser = asyncHandler(async (req, res) => {
   const { phone, password } = req.body;
+  console.log(req.body);
   if (!phone || !password) {
     res.status(400);
     throw new Error("Please enter phone number and password");

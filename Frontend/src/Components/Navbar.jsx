@@ -2,6 +2,9 @@ import React from 'react'
 import { Navbar, Typography, Button } from "@material-tailwind/react";
 
 const NavBar = () => {
+  // const logout = async() => {
+
+  // }
   return (
     <Navbar
         variant="gradient"

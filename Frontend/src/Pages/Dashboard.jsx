@@ -7,7 +7,6 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-
       <div className="flex flex-col md:flex-row flex-1 justify-around items-center">
         <Payment className="md:w-1/2" />
         <BatchChange className="md:w-1/2" />
