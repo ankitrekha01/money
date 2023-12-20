@@ -1,4 +1,5 @@
 const db = require("../config/dbConnection");
+const query = require("../query/yoga.query");
 class Batch {
   constructor(batch) {
     this.batch = batch;
@@ -6,7 +7,7 @@ class Batch {
   findBatch = async () => {
     try {
       const [rows, _] = await db.execute(
-        "SELECT BatchId FROM batch WHERE batch = ?",
+        query.FIND_BATCH,
         [this.batch]
       );
       return rows;

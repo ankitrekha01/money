@@ -1,17 +1,9 @@
 const db = require("../config/dbConnection");
-
+const query = require("../query/yoga.query");
 const Batch = require("./Batch");
 
 class User {
-  constructor(
-    userId,
-    name,
-    age,
-    phone,
-    batch,
-    enrollMonth,
-    hashedPassword
-  ) {
+  constructor(userId, name, age, phone, batch, enrollMonth, hashedPassword) {
     this.userId = userId;
     this.name = name;
     this.age = age;
@@ -34,7 +26,7 @@ class User {
       batchId = batchId[0].BatchId;
       // console.log(this.userId, this.name, this.age, this.phone, this.enrollMonth, this.hashedPassword, createOn);
       const [rows, _] = await db.execute(
-        "INSERT INTO user (UserId,BatchId,Name,Age,PhoneNumber,EnrollMonth,password,CreatedOn) VALUES (?,?,?,?,?,?,?,?)",
+        query.SAVE_USER,
         [
           this.userId,
           batchId,
@@ -56,7 +48,7 @@ class User {
   checkUser = async () => {
     try {
       const [rows, _] = await db.execute(
-        "SELECT * FROM user WHERE PhoneNumber = ?",
+        query.CHECK_USER,
         [this.phone]
       );
       // console.log(rows);
@@ -70,8 +62,7 @@ class User {
   checkPayment = async () => {
     try {
       const [rows, _] = await db.execute(
-        `SELECT * FROM user
-        WHERE UserId = ?`,
+        query.GET_USER,
         [this.userId]
       );
       const currentMonth = new Date().getMonth();
@@ -95,7 +86,7 @@ class User {
   updatePaymentDate = async () => {
     try {
       const [rows, _] = await db.execute(
-        `UPDATE user SET LatestPayment = ? WHERE UserId = ?`,
+        query.UPDATE_PAYMENT_DATE,
         [new Date(), this.userId]
       );
       // console.log(rows);
@@ -112,8 +103,8 @@ class User {
       batchId = await batchId.findBatch();
       batchId = batchId[0].BatchId;
       const [rows, _] = await db.execute(
-        `UPDATE user SET BatchId = ? and EnrollMonth=? WHERE UserId = ?`,
-        [batchId,this.enrollMonth, this.userId]
+        query.UPDATE_USER_BATCH,
+        [batchId, this.enrollMonth, this.userId]
       );
       // console.log(rows);
       return rows;

@@ -1,4 +1,5 @@
 const db = require("../config/dbConnection");
+const query = require("../query/yoga.query");
 class Payment{
     constructor(paymentId,userId){
         this.paymentId = paymentId;
@@ -10,7 +11,7 @@ class Payment{
             const paymentDate = new Date();
             const paymentComplete = true;
             const [rows, _] = await db.execute(
-                "INSERT INTO payment (PaymentId,UserId,PaymentDate,PaymentComplete) VALUES (?,?,?,?)",
+                query.PAYMENT_SAVE,
                 [this.paymentId,this.userId,paymentDate,paymentComplete]
             );
             // console.log(rows);
