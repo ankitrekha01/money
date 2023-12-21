@@ -1,0 +1,20 @@
+FROM node:alpine
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 5001
+
+ENV NODE_ENV=development
+ENV DB_HOST=mysql
+ENV DB_USER=user
+ENV DB_PASSWD=root
+ENV DB_NAME=yoga
+ENV JWT_EXPIRATION_TIME=15m
+
+CMD ["npm", "start"]
