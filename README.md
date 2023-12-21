@@ -22,4 +22,4 @@ To get a local copy up and running, follow these simple steps.
     docker-compose up
     ```
 ## ER Diagram
-![ER Diagram](https://github.com/ankitrekha01/money/assets/62371794/6d943924-8cf1-4256-abb5-f6220626428c)
+![ER Diagram](https://github.com/ankitrekha01/money/assets/62371794/2e9f30a1-df25-4547-bb10-931e88832f5f)
